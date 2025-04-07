@@ -133,6 +133,50 @@ For implementing your encryption and decryption functions, we recommend using th
 - [Google Tink](https://developers.google.com/tink) (Various language implementations available)
 - [nacl](https://nacl.cr.yp.to/) (Various language implementations available)
 
+### Use the privacy library (Go)
+```go
+func main(){
+    c := &MyCrypter{}
+    p := privacy.New(c)
+	
+    msg := proto.UserCreated_builder{
+        Id: proto.String("123456789"),	
+        CreatedAt: timestamppb.Now(),
+        FirstName: proto.String("John"),
+        LastName: proto.String("Doe"),
+        EmailAddress: proto.String("john@example.com"),
+        Address: &proto.Address_builder{
+            Line1: proto.String("123 Example St"),
+            Locality: proto.String("Melbourne"),
+            AdministrativeArea: proto.String("VIC"),
+            PostCode: proto.String("3000"),
+            Country: proto.String("AU"),
+        },
+    }.Build()
+	
+    encrypted, err := p.Encrypt(msg)
+	if err != nil {
+        panic(err)
+    }
+	
+    decrypted, err := p.Decrypt(encrypted)
+	if err != nil {
+        panic(err)
+    }
+	
+    fmt.Println(decrypted) // Encrypted fields decrypted and returned
+	
+    c.DeleteKey("user:123456789")
+	
+    decrypted, err = p.Decrypt(encrypted)
+    if err != nil {
+        panic(err)
+    }
+	
+    fmt.Println(decrypted) // Encrypted fields cleared or set to fallback values
+}
+```
+
 ## Development
 ### Compile protobuf
 Run `go generate` from the root of the repository.
