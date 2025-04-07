@@ -1,0 +1,136 @@
+edition = "2023";
+
+package boostport.privacy.testing;
+
+import "boostport/privacy/privacy.proto";
+
+message InvalidMultipleDataSubjectIDs {
+  string id = 1 [(boostport.privacy.field).data_subject_id = {}];
+  string data1 = 2 [(boostport.privacy.field).data_subject_id = {}];
+  string data2 = 3 [(boostport.privacy.field).personal_data = {}];
+  string data3 = 4;
+}
+
+message InvalidMultipleDataSubjectIDsWithNesting {
+  message Nested {
+    string id = 1 [(boostport.privacy.field).data_subject_id = {}];
+    string data1 = 2;
+  }
+
+  string id = 1 [(boostport.privacy.field).data_subject_id = {}];
+  string data1 = 2 [(boostport.privacy.field).personal_data = {}];
+  Nested data2 = 3;
+}
+
+message InvalidMultipleDataSubjectIDsWithDeepNesting {
+  message Nested1 {
+    string id = 1;
+    string data1 = 2;
+    Nested2 data2 = 3;
+  }
+
+  message Nested2 {
+    string id = 1 [(boostport.privacy.field).data_subject_id = {}];
+    string data1 = 2;
+  }
+
+  string id = 1 [(boostport.privacy.field).data_subject_id = {}];
+  string data1 = 2 [(boostport.privacy.field).personal_data = {}];
+  Nested1 data2 = 3;
+}
+
+message InvalidMultipleDataSubjectIDsWithPrefix {
+  string id = 1 [(boostport.privacy.field).data_subject_id.prefix = "test-"];
+  string data1 = 2 [(boostport.privacy.field).data_subject_id.prefix = "test-"];
+  string data2 = 3 [(boostport.privacy.field).personal_data = {}];
+  string data3 = 4;
+}
+
+message InvalidDataSubjectIDRepeated {
+  repeated string id = 1 [(boostport.privacy.field).data_subject_id = {}];
+  string data1 = 2 [(boostport.privacy.field).personal_data = {}];
+}
+
+message InvalidDataSubjectIDMap {
+  map<string, string> id = 1 [(boostport.privacy.field).data_subject_id = {}];
+  string data1 = 2 [(boostport.privacy.field).personal_data = {}];
+}
+
+message InvalidDataSubjectIDMessage {
+  message Nested {
+    string id = 1;
+    string data1 = 2;
+  }
+
+  Nested id = 1 [(boostport.privacy.field).data_subject_id = {}];
+  string data1 = 2 [(boostport.privacy.field).personal_data = {}];
+}
+
+message InvalidDataSubjectIDNestedInRepeated {
+  message Nested {
+    string id = 1 [(boostport.privacy.field).data_subject_id = {}];
+    string data1 = 2;
+  }
+
+  repeated Nested id = 1;
+  string data1 = 2 [(boostport.privacy.field).personal_data = {}];
+}
+
+message InvalidDataSubjectIDNestedInMap {
+  message Nested {
+    string id = 1 [(boostport.privacy.field).data_subject_id = {}];
+    string data1 = 2;
+  }
+
+  map<string, Nested> id = 1;
+  string data1 = 2 [(boostport.privacy.field).personal_data = {}];
+}
+
+message InvalidExternalDataSubjectID {
+  string id = 1 [(boostport.privacy.field).data_subject_id = {}];
+  string data1 = 2;
+}
+
+message InvalidDataSubjectIDInExternalNestedInRepeated {
+  message Nested {
+    InvalidExternalDataSubjectID data1 = 1;
+    string data2 = 2;
+  }
+
+  repeated Nested id = 1;
+  string data1 = 2 [(boostport.privacy.field).personal_data = {}];
+}
+
+message InvalidDataSubjectIDInExternalNestedInMap {
+  message Nested {
+    InvalidExternalDataSubjectID data1 = 1;
+    string data2 = 2;
+  }
+
+  map<string, Nested> id = 1;
+  string data1 = 2 [(boostport.privacy.field).personal_data = {}];
+}
+
+message InvalidNoPersonalDataField {
+  string id = 1 [(boostport.privacy.field).data_subject_id = {}];
+  string data1 = 2;
+}
+
+message InvalidFallbackTypes {
+  string id = 1 [(boostport.privacy.field).data_subject_id = {}];
+  bool data1 = 2 [(boostport.privacy.field).personal_data = {fallback_string: "test"}];
+  int32 data2 = 3 [(boostport.privacy.field).personal_data = {fallback_string: "test"}];
+  sint32 data3 = 4 [(boostport.privacy.field).personal_data = {fallback_string: "test"}];
+  uint32 data4 = 5 [(boostport.privacy.field).personal_data = {fallback_string: "test"}];
+  int64 data5 = 6 [(boostport.privacy.field).personal_data = {fallback_string: "test"}];
+  sint64 data6 = 7 [(boostport.privacy.field).personal_data = {fallback_string: "test"}];
+  uint64 data7 = 8 [(boostport.privacy.field).personal_data = {fallback_string: "test"}];
+  sfixed32 data8 = 9 [(boostport.privacy.field).personal_data = {fallback_string: "test"}];
+  fixed32 data9 = 10 [(boostport.privacy.field).personal_data = {fallback_string: "test"}];
+  float data10 = 11 [(boostport.privacy.field).personal_data = {fallback_string: "test"}];
+  sfixed64 data11 = 12 [(boostport.privacy.field).personal_data = {fallback_string: "test"}];
+  fixed64 data12 = 13 [(boostport.privacy.field).personal_data = {fallback_string: "test"}];
+  double data13 = 14 [(boostport.privacy.field).personal_data = {fallback_string: "test"}];
+  string data14 = 15 [(boostport.privacy.field).personal_data = {fallback_int32: 1}];
+  bytes data15 = 16 [(boostport.privacy.field).personal_data = {fallback_string: "test"}];
+}

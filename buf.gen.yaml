@@ -1,0 +1,12 @@
+version: v2
+managed:
+  enabled: true
+  override:
+    - file_option: go_package_prefix
+      value: github.com/Boostport/protoprivacy/internal/generated
+plugins:
+  - remote: buf.build/protocolbuffers/go:v1.36.5
+    out: internal/generated
+    opt: paths=source_relative,default_api_level=API_OPAQUE # remove API_OPAQUE when edition 2024 is released
+inputs:
+  - directory: proto

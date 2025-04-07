@@ -1,0 +1,46 @@
+edition = "2023";
+
+package boostport.privacy;
+
+import "google/protobuf/any.proto";
+import "google/protobuf/descriptor.proto";
+
+message Envelope {
+  google.protobuf.Any message = 1;
+  bytes encrypted_data = 2;
+}
+
+extend google.protobuf.FieldOptions {
+  PrivacyFieldOptions field = 2000;
+}
+
+message PrivacyFieldOptions {
+  oneof type {
+    DataSubjectID data_subject_id = 1;
+    PersonalData personal_data = 2;
+  }
+
+  message DataSubjectID {
+    string prefix = 1;
+  }
+
+  message PersonalData {
+    oneof fallback {
+      double fallback_double = 1;
+      float fallback_float = 2;
+      int32 fallback_int32 = 3;
+      int64 fallback_int64 = 4;
+      uint32 fallback_uint32 = 5;
+      uint64 fallback_uint64 = 6;
+      sint32 fallback_sint32 = 7;
+      sint64 fallback_sint64 = 8;
+      fixed32 fallback_fixed32 = 9;
+      fixed64 fallback_fixed64 = 10;
+      sfixed32 fallback_sfixed32 = 11;
+      sfixed64 fallback_sfixed64 = 12;
+      bool fallback_bool = 13;
+      string fallback_string = 14;
+      bytes fallback_bytes = 15;
+    }
+  }
+}

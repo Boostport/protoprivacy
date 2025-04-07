@@ -1,0 +1,16 @@
+# For details on buf.yaml configuration, visit https://buf.build/docs/configuration/v2/buf-yaml
+version: v2
+lint:
+  use:
+    - STANDARD
+  except:
+    - PACKAGE_VERSION_SUFFIX
+breaking:
+  use:
+    - FILE
+modules:
+  - path: proto/protoprivacy
+    name: buf.build/boostport/protoprivacy
+  - path: proto/protoprivacy-testing
+deps:
+  - buf.build/protocolbuffers/wellknowntypes

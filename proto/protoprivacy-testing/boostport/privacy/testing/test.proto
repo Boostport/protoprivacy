@@ -1,0 +1,51 @@
+edition = "2023";
+
+package boostport.privacy.testing;
+
+import "boostport/privacy/privacy.proto";
+
+message TestNested1 {
+  string data1 = 1 [(boostport.privacy.field).personal_data = {}];
+  string data2 = 2 [(boostport.privacy.field).personal_data = {}];
+  string data3 = 3 [(boostport.privacy.field).personal_data = {}];
+  string data4 = 4;
+}
+
+message TestNested2 {
+  string data1 = 1;
+  string data2 = 2;
+  string data3 = 3;
+  string data4 = 4;
+}
+
+message TestMessage {
+  string id = 1 [(boostport.privacy.field).data_subject_id = {}];
+  string data1 = 2 [(boostport.privacy.field).personal_data = {}];
+  TestNested1 data2 = 3;
+  TestNested2 data3 = 4 [(boostport.privacy.field).personal_data = {}];
+  repeated string data4 = 5 [(boostport.privacy.field).personal_data = {}];
+  repeated TestNested1 data5 = 6;
+  repeated TestNested2 data6 = 7 [(boostport.privacy.field).personal_data = {}];
+  map<string, string> data7 = 8 [(boostport.privacy.field).personal_data = {}];
+  map<string, TestNested1> data8 = 9;
+  map<string, TestNested2> data9 = 10 [(boostport.privacy.field).personal_data = {}];
+}
+
+message TestFallbackTypes {
+  string id = 1 [(boostport.privacy.field).data_subject_id = {}];
+  double data1 = 2 [(boostport.privacy.field).personal_data = {fallback_double: 1.0}];
+  float data2 = 3 [(boostport.privacy.field).personal_data = {fallback_float: 1.0}];
+  int32 data3 = 4 [(boostport.privacy.field).personal_data = {fallback_int32: 1}];
+  int64 data4 = 5 [(boostport.privacy.field).personal_data = {fallback_int64: 1}];
+  uint32 data5 = 6 [(boostport.privacy.field).personal_data = {fallback_uint32: 1}];
+  uint64 data6 = 7 [(boostport.privacy.field).personal_data = {fallback_uint64: 1}];
+  sint32 data7 = 8 [(boostport.privacy.field).personal_data = {fallback_sint32: 1}];
+  sint64 data8 = 9 [(boostport.privacy.field).personal_data = {fallback_sint64: 1}];
+  fixed32 data9 = 10 [(boostport.privacy.field).personal_data = {fallback_fixed32: 1}];
+  fixed64 data10 = 11 [(boostport.privacy.field).personal_data = {fallback_fixed64: 1}];
+  sfixed32 data11 = 12 [(boostport.privacy.field).personal_data = {fallback_sfixed32: 1}];
+  sfixed64 data12 = 13 [(boostport.privacy.field).personal_data = {fallback_sfixed64: 1}];
+  bool data13 = 14 [(boostport.privacy.field).personal_data = {fallback_bool: true}];
+  string data14 = 15 [(boostport.privacy.field).personal_data = {fallback_string: "test"}];
+  bytes data15 = 16 [(boostport.privacy.field).personal_data = {fallback_bytes: "test"}];
+}
