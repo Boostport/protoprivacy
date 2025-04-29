@@ -1,6 +1,7 @@
 package protoprivacy
 
 import (
+	"context"
 	"encoding/base64"
 	"testing"
 
@@ -12,12 +13,12 @@ import (
 // This is only for testing purposes and MUST NOT be used in production.
 type fakeCrypter struct{}
 
-func (f fakeCrypter) Encrypt(dataSubjectID string, cleartext []byte) ([]byte, error) {
+func (f fakeCrypter) Encrypt(_ context.Context, _ string, cleartext []byte) ([]byte, error) {
 	dst := make([]byte, base64.StdEncoding.EncodedLen(len(cleartext)))
 	base64.StdEncoding.Encode(dst, cleartext)
 	return dst, nil
 }
-func (f fakeCrypter) Decrypt(dataSubjectID string, ciphertext []byte) ([]byte, error) {
+func (f fakeCrypter) Decrypt(_ context.Context, _ string, ciphertext []byte) ([]byte, error) {
 	dst := make([]byte, base64.StdEncoding.DecodedLen(len(ciphertext)))
 	n, err := base64.StdEncoding.Decode(dst, ciphertext)
 	if err != nil {
@@ -28,12 +29,12 @@ func (f fakeCrypter) Decrypt(dataSubjectID string, ciphertext []byte) ([]byte, e
 
 type fakeDeletedDataSubjectCrypter struct{}
 
-func (f fakeDeletedDataSubjectCrypter) Encrypt(dataSubjectID string, cleartext []byte) ([]byte, error) {
+func (f fakeDeletedDataSubjectCrypter) Encrypt(_ context.Context, _ string, cleartext []byte) ([]byte, error) {
 	dst := make([]byte, base64.StdEncoding.EncodedLen(len(cleartext)))
 	base64.StdEncoding.Encode(dst, cleartext)
 	return dst, nil
 }
-func (f fakeDeletedDataSubjectCrypter) Decrypt(dataSubjectID string, ciphertext []byte) ([]byte, error) {
+func (f fakeDeletedDataSubjectCrypter) Decrypt(_ context.Context, _ string, _ []byte) ([]byte, error) {
 	return nil, PersonalDataDeleted
 }
 
@@ -170,12 +171,12 @@ func TestPrivacyEncryptionAndDecryption(t *testing.T) {
 		p := New(fakeCrypter{})
 
 		t.Run(tt.explanation, func(t *testing.T) {
-			envelope, err := p.Encrypt(tt.proto)
+			envelope, err := p.Encrypt(context.Background(), tt.proto)
 			if err != nil {
 				t.Fatalf("Error encrypting message: %v", err)
 			}
 
-			decrypted, err := p.Decrypt(envelope)
+			decrypted, err := p.Decrypt(context.Background(), envelope)
 			if err != nil {
 				t.Fatalf("Error decrypting message: %v", err)
 			}
@@ -369,12 +370,12 @@ func TestPrivacyEncryptionAndDecryptionAfterDeletion(t *testing.T) {
 		p := New(fakeDeletedDataSubjectCrypter{})
 
 		t.Run(tt.explanation, func(t *testing.T) {
-			envelope, err := p.Encrypt(tt.proto)
+			envelope, err := p.Encrypt(context.Background(), tt.proto)
 			if err != nil {
 				t.Fatalf("Error encrypting message: %v", err)
 			}
 
-			decrypted, err := p.Decrypt(envelope)
+			decrypted, err := p.Decrypt(context.Background(), envelope)
 			if err != nil {
 				t.Fatalf("Error decrypting message: %v", err)
 			}

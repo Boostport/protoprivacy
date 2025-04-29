@@ -1,10 +1,13 @@
 package protoprivacy
 
-import "errors"
+import (
+	"context"
+	"errors"
+)
 
 var PersonalDataDeleted = errors.New("personal data deleted")
 
 type Crypter interface {
-	Encrypt(dataSubjectID string, cleartext []byte) ([]byte, error)
-	Decrypt(dataSubjectID string, ciphertext []byte) ([]byte, error)
+	Encrypt(ctx context.Context, dataSubjectID string, cleartext []byte) ([]byte, error)
+	Decrypt(ctx context.Context, dataSubjectID string, ciphertext []byte) ([]byte, error)
 }

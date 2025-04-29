@@ -1,6 +1,7 @@
 package protoprivacy
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"sync"
@@ -43,7 +44,7 @@ func (p *Privacy) loadMessage(m proto.Message) error {
 	return validatedMessageErr
 }
 
-func (p *Privacy) Encrypt(message proto.Message) (*privacy.Envelope, error) {
+func (p *Privacy) Encrypt(ctx context.Context, message proto.Message) (*privacy.Envelope, error) {
 	if err := p.loadMessage(message); err != nil {
 		return nil, err
 	}
@@ -63,7 +64,7 @@ func (p *Privacy) Encrypt(message proto.Message) (*privacy.Envelope, error) {
 		return nil, fmt.Errorf("error marshaling message: %w", err)
 	}
 
-	cipherText, err := p.crypter.Encrypt(*dataSubjectID, marshaled)
+	cipherText, err := p.crypter.Encrypt(ctx, *dataSubjectID, marshaled)
 	if err != nil {
 		return nil, fmt.Errorf("error encrypting message: %w", err)
 	}
@@ -79,7 +80,7 @@ func (p *Privacy) Encrypt(message proto.Message) (*privacy.Envelope, error) {
 	}.Build(), nil
 }
 
-func (p *Privacy) Decrypt(envelope *privacy.Envelope) (proto.Message, error) {
+func (p *Privacy) Decrypt(ctx context.Context, envelope *privacy.Envelope) (proto.Message, error) {
 
 	message, err := envelope.GetMessage().UnmarshalNew()
 	if err != nil {
@@ -91,7 +92,7 @@ func (p *Privacy) Decrypt(envelope *privacy.Envelope) (proto.Message, error) {
 		return nil, fmt.Errorf("error getting data subject id: %w", err)
 	}
 
-	plainTextBytes, err := p.crypter.Decrypt(*dataSubjectID, envelope.GetEncryptedData())
+	plainTextBytes, err := p.crypter.Decrypt(ctx, *dataSubjectID, envelope.GetEncryptedData())
 	if err == nil {
 		decryptedMessage := message.ProtoReflect().New().Interface()
 

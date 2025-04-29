@@ -1,6 +1,7 @@
 package protoprivacy
 
 import (
+	"context"
 	"encoding/base64"
 	"fmt"
 
@@ -14,12 +15,12 @@ type exampleCrypter struct {
 	deletedKeys map[string]struct{}
 }
 
-func (c *exampleCrypter) Encrypt(dataSubjectID string, cleartext []byte) ([]byte, error) {
+func (c *exampleCrypter) Encrypt(_ context.Context, _ string, cleartext []byte) ([]byte, error) {
 	dst := make([]byte, base64.StdEncoding.EncodedLen(len(cleartext)))
 	base64.StdEncoding.Encode(dst, cleartext)
 	return dst, nil
 }
-func (c *exampleCrypter) Decrypt(dataSubjectID string, ciphertext []byte) ([]byte, error) {
+func (c *exampleCrypter) Decrypt(_ context.Context, dataSubjectID string, ciphertext []byte) ([]byte, error) {
 	if _, ok := c.deletedKeys[dataSubjectID]; ok {
 		return nil, PersonalDataDeleted
 	}
@@ -60,14 +61,14 @@ func Example() {
 		},
 	}.Build()
 
-	encrypted, err := p.Encrypt(msg)
+	encrypted, err := p.Encrypt(context.Background(), msg)
 	if err != nil {
 		panic(err)
 	}
 
 	fmt.Println(encrypted)
 
-	decrypted, err := p.Decrypt(encrypted)
+	decrypted, err := p.Decrypt(context.Background(), encrypted)
 	if err != nil {
 		panic(err)
 	}
@@ -76,7 +77,7 @@ func Example() {
 
 	c.DeleteKey("1234567890")
 
-	decrypted, err = p.Decrypt(encrypted)
+	decrypted, err = p.Decrypt(context.Background(), encrypted)
 	if err != nil {
 		panic(err)
 	}
