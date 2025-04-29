@@ -93,7 +93,16 @@ func (p *Privacy) Decrypt(ctx context.Context, envelope *privacy.Envelope) (prot
 	}
 
 	plainTextBytes, err := p.crypter.Decrypt(ctx, *dataSubjectID, envelope.GetEncryptedData())
-	if err == nil {
+	if err != nil {
+		return nil, fmt.Errorf("error decrypting message: %w", err)
+	}
+
+	if plainTextBytes == nil {
+		err := applyFallbackToPersonalDataFields(message.ProtoReflect())
+		if err != nil {
+			return nil, fmt.Errorf("error applying fallback to personal data fields: %w", err)
+		}
+	} else {
 		decryptedMessage := message.ProtoReflect().New().Interface()
 
 		err = proto.Unmarshal(plainTextBytes, decryptedMessage)
@@ -102,15 +111,6 @@ func (p *Privacy) Decrypt(ctx context.Context, envelope *privacy.Envelope) (prot
 		}
 
 		return decryptedMessage, nil
-	}
-
-	if errors.Is(err, PersonalDataDeleted) {
-		err := applyFallbackToPersonalDataFields(message.ProtoReflect())
-		if err != nil {
-			return nil, fmt.Errorf("error applying fallback to personal data fields: %w", err)
-		}
-	} else {
-		return nil, fmt.Errorf("error decrypting message: %w", err)
 	}
 
 	return message, nil

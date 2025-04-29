@@ -22,7 +22,7 @@ func (c *exampleCrypter) Encrypt(_ context.Context, _ string, cleartext []byte) 
 }
 func (c *exampleCrypter) Decrypt(_ context.Context, dataSubjectID string, ciphertext []byte) ([]byte, error) {
 	if _, ok := c.deletedKeys[dataSubjectID]; ok {
-		return nil, PersonalDataDeleted
+		return nil, nil
 	}
 
 	dst := make([]byte, base64.StdEncoding.DecodedLen(len(ciphertext)))

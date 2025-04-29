@@ -124,9 +124,10 @@ message UserCreated {
 ```
 
 ### Implement crypter
-In order to encrypt and decrypt messages, you need to implement a crypter. The crypter is supplied the data subject id
-and the bytes to encrypt or decrypt. The crypter is responsible for deriving the key from the data subject id and the
-implementation of the encryption and decryption functions is left to the implementer. We are unable to ship a concrete
+To encrypt and decrypt messages, you need to implement a crypter. The crypter is supplied the data subject id
+and the bytes to encrypt or decrypt. The crypter is responsible for deriving the key from the data subject id, and the
+implementation of the encryption and decryption functions is left to the implementer. If the key has been deleted, the
+crypter should return nil as the ciphertext and nil as the error (`nil, nil`). We are unable to ship a concrete
 implementation of a crypter as it is dependent on the use case and the encryption algorithm used. 
 
 For implementing your encryption and decryption functions, we recommend using the following libraries:

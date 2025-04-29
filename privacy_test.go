@@ -35,7 +35,7 @@ func (f fakeDeletedDataSubjectCrypter) Encrypt(_ context.Context, _ string, clea
 	return dst, nil
 }
 func (f fakeDeletedDataSubjectCrypter) Decrypt(_ context.Context, _ string, _ []byte) ([]byte, error) {
-	return nil, PersonalDataDeleted
+	return nil, nil
 }
 
 func TestPrivacyEncryptionAndDecryption(t *testing.T) {
