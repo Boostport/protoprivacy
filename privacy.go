@@ -16,7 +16,7 @@ import (
 )
 
 type Privacy struct {
-	sync.Mutex
+	mu      sync.Mutex
 	cache   atomic.Pointer[messageCache]
 	crypter Crypter
 }
@@ -26,8 +26,8 @@ func (p *Privacy) loadMessage(m proto.Message) error {
 		return validatedMessage.err
 	}
 
-	p.Lock()
-	defer p.Unlock()
+	p.mu.Lock()
+	defer p.mu.Unlock()
 
 	cache := *p.cache.Load()
 
