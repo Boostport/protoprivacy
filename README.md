@@ -1,5 +1,6 @@
 # protoprivacy
 [![Tests](https://github.com/Boostport/protoprivacy/actions/workflows/tests.yml/badge.svg)](https://github.com/Boostport/protoprivacy/actions/workflows/tests.yml)
+[![Code Coverage](https://qlty.sh/gh/Boostport/projects/protoprivacy/coverage.svg)](https://qlty.sh/gh/Boostport/projects/protoprivacy)
 
 `protoprivacy` is a [Protocol Buffers](https://protobuf.dev/) library that allows data in protobuf message fields marked
 as personal data to be rendered unreadable using [crypto-shredding](https://en.wikipedia.org/wiki/Crypto-shredding).

@@ -10,6 +10,10 @@ name: Tests
 jobs:
   test:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+      pull-requests: write
     steps:
       - name: Checkout code
         uses: actions/checkout@v5
@@ -22,3 +26,10 @@ jobs:
         with:
           push: false
       - run: go test -coverprofile c.out -v -race ./...
+      - name: Send results to Qlty.sh
+        if: github.ref == 'refs/heads/main'
+        uses: qltysh/qlty-action/coverage@v2
+        with:
+          oidc: true
+          files: c.out
+          strip-prefix: github.com/${{ github.repository }}/
