@@ -10,7 +10,7 @@ as personal data to be rendered unreadable using [crypto-shredding](https://en.w
 │  Original message                                                        │
 │  ────────────────                                                        │
 │                                                                          │
-│  string id = 1 [(boostport.privacy.data_subject_id).id = {}];            │
+│  string id = 1 [(boostport.privacy.field).data_subject_id = {}];         │
 │                                                                          │
 │  string private_data = 2 [(boostport.privacy.field).personal_data = {}]; │
 │                                                                          │
@@ -34,7 +34,7 @@ as personal data to be rendered unreadable using [crypto-shredding](https://en.w
 └─────────────────────────────────────────────────┘                         
 ```
 Fields containing personal data are marked with the `[(boostport.privacy.field).personal_data = {}]` annotation and the
-field containing the data subject id is marked with the `[(boostport.privacy.data_subject_id).id = {}]` annotation. During
+field containing the data subject id is marked with the `[(boostport.privacy.field).data_subject_id = {}]` annotation. During
 marshaling, the personal data fields' values are replaced with their default/zero values. The data subject id is used
 to derive a key that is used to encrypt the original protobuf message containing sensitive data. The encrypted and redacted
 messages are stored in a `protoprivacy.Envelope` message.
@@ -93,7 +93,7 @@ message UserCreated {
 }
 ```
 
-Mark the field containing your data subject id with the `[(boostport.privacy.data_subject_id).id = {}]` annotation. There
+Mark the field containing your data subject id with the `[(boostport.privacy.field).data_subject_id = {}]` annotation. There
 can only be one data subject id annotation in your message, and it must be a `string` or `numeric` field. The data subject
 id can be in a nested message, but none of its parents can be a map or repeated field. In addition, a prefix can be set
 for the data subject id. This prefix can be used by your crypter to derive sub-keys which can be used to group data to
@@ -114,7 +114,7 @@ message Address {
   
 }
 message UserCreated {
-  string id = 1 [(boostport.privacy.data_subject_id).id = {prefix: "user:"}];
+  string id = 1 [(boostport.privacy.field).data_subject_id = {prefix: "user:"}];
   google.protobuf.timestamp created_at = 2;
   string first_name = 3 [(boostport.privacy.field).personal_data = {fallback_string: "ANONYMOUS"}];
   string last_name = 4 [(boostport.privacy.field).personal_data = {fallback_string: "USER"}];
