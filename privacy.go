@@ -21,9 +21,9 @@ type Privacy struct {
 	crypter Crypter
 }
 
-func (p *Privacy) loadMessage(m proto.Message) error {
+func (p *Privacy) loadMessage(m proto.Message) (bool, error) {
 	if validatedMessage, ok := (*p.cache.Load())[m.ProtoReflect().Descriptor()]; ok {
-		return validatedMessage.err
+		return validatedMessage.hasPrivacyFields, validatedMessage.err
 	}
 
 	p.mu.Lock()
@@ -32,21 +32,27 @@ func (p *Privacy) loadMessage(m proto.Message) error {
 	cache := *p.cache.Load()
 
 	if validatedMessage, ok := cache[m.ProtoReflect().Descriptor()]; ok {
-		return validatedMessage.err
+		return validatedMessage.hasPrivacyFields, validatedMessage.err
 	}
 
 	cloned := cache.Clone()
-	validatedMessageErr := validateMessage(m)
-	cloned[m.ProtoReflect().Descriptor()] = &message{err: validatedMessageErr}
+	hasPrivacyFields, validatedMessageErr := validateMessage(m)
+	cloned[m.ProtoReflect().Descriptor()] = &message{hasPrivacyFields: hasPrivacyFields, err: validatedMessageErr}
 
 	p.cache.Store(&cloned)
 
-	return validatedMessageErr
+	return hasPrivacyFields, validatedMessageErr
 }
 
-func (p *Privacy) Encrypt(ctx context.Context, message proto.Message) (*privacy.Envelope, error) {
-	if err := p.loadMessage(message); err != nil {
+func (p *Privacy) Encrypt(ctx context.Context, message proto.Message) (proto.Message, error) {
+	hasPrivacyFields, err := p.loadMessage(message)
+
+	if err != nil {
 		return nil, err
+	}
+
+	if !hasPrivacyFields {
+		return message, nil
 	}
 
 	withoutPersonalData := proto.Clone(message)
@@ -80,7 +86,11 @@ func (p *Privacy) Encrypt(ctx context.Context, message proto.Message) (*privacy.
 	}.Build(), nil
 }
 
-func (p *Privacy) Decrypt(ctx context.Context, envelope *privacy.Envelope) (proto.Message, error) {
+func (p *Privacy) Decrypt(ctx context.Context, message proto.Message) (proto.Message, error) {
+	envelope, ok := message.(*privacy.Envelope)
+	if !ok {
+		return message, nil
+	}
 
 	message, err := envelope.GetMessage().UnmarshalNew()
 	if err != nil {

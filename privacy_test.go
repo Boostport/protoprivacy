@@ -386,3 +386,34 @@ func TestPrivacyEncryptionAndDecryptionAfterDeletion(t *testing.T) {
 		})
 	}
 }
+
+func TestMessagesWithoutPrivacyFieldsPassesThrough(t *testing.T) {
+	msg := testprotos.Passthrough_builder{
+		Data:   proto.String("test"),
+		Number: proto.Int32(1),
+	}.Build()
+
+	p := New(fakeCrypter{})
+
+	encrypted, err := p.Encrypt(context.Background(), msg)
+	if err != nil {
+		t.Fatalf("Error encrypting message: %v", err)
+	}
+
+	if !proto.Equal(msg, encrypted) {
+		t.Error("Message without privacy fields should pass through unchanged on encryption")
+	}
+
+	decrypted, err := p.Decrypt(context.Background(), encrypted)
+	if err != nil {
+		t.Fatalf("Error decrypting message: %v", err)
+	}
+
+	if !proto.Equal(msg, decrypted) {
+		t.Error("Message without privacy fields should pass through unchanged on decryption")
+	}
+
+	if !proto.Equal(encrypted, decrypted) {
+		t.Error("Encrypted and decrypted messages should be identical for messages without privacy fields")
+	}
+}

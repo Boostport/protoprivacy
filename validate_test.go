@@ -66,7 +66,7 @@ func TestInvalidMessages(t *testing.T) {
 		},
 	} {
 		t.Run(tt.explanation, func(t *testing.T) {
-			err := validateMessage(tt.message)
+			_, err := validateMessage(tt.message)
 
 			if err == nil {
 				t.Error("Expected error, but invalid message passed validation")
@@ -154,7 +154,7 @@ func TestValidMessages(t *testing.T) {
 		},
 	} {
 		t.Run(tt.explanation, func(t *testing.T) {
-			err := validateMessage(tt.message)
+			_, err := validateMessage(tt.message)
 
 			if err != nil {
 				t.Errorf("Unexpected validation failure: %s", err)
