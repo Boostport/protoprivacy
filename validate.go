@@ -9,7 +9,7 @@ import (
 	"google.golang.org/protobuf/reflect/protoreflect"
 )
 
-func validateMessage(message proto.Message) error {
+func validateMessage(message proto.Message) (bool, error) {
 
 	var errs error
 
@@ -64,6 +64,10 @@ func validateMessage(message proto.Message) error {
 		return false
 	})
 
+	if numDataSubjectIDs == 0 && numPersonalData == 0 {
+		return false, errs
+	}
+
 	if numDataSubjectIDs > 1 {
 		errs = errors.Join(errs, fmt.Errorf("message %s has more than one field with the data_subject_id field option in %s", reflect.FullName(), reflect.ParentFile().Path()))
 	}
@@ -80,7 +84,7 @@ func validateMessage(message proto.Message) error {
 		errs = errors.Join(errs, fmt.Errorf("message %s must have at least 1 field with the personal_data field option in %s", reflect.FullName(), reflect.ParentFile().Path()))
 	}
 
-	return errs
+	return true, errs
 }
 
 // walkFields walks all fields in a message and calls the provided function for each field. If the function returns true, the walk is stopped.

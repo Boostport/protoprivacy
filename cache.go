@@ -3,7 +3,8 @@ package protoprivacy
 import "google.golang.org/protobuf/reflect/protoreflect"
 
 type message struct {
-	err error
+	hasPrivacyFields bool
+	err              error
 }
 
 type messageCache map[protoreflect.MessageDescriptor]*message

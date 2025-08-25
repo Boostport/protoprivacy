@@ -1,0 +1,8 @@
+edition = "2023";
+
+package boostport.privacy.testing;
+
+message Passthrough {
+  string data = 1;
+  int32 number = 2;
+}
