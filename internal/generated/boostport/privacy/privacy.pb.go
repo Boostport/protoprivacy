@@ -1125,7 +1125,7 @@ const file_boostport_privacy_privacy_proto_rawDesc = "" +
 	"\bfallbackB\x06\n" +
 	"\x04type:\\\n" +
 	"\x05field\x12\x1d.google.protobuf.FieldOptions\x18\xd0\x0f \x01(\v2&.boostport.privacy.PrivacyFieldOptionsR\x05fieldB\xd2\x01\n" +
-	"\x15com.boostport.privacyB\fPrivacyProtoP\x01ZFgithub.com/Boostport/protoprivacy/internal/generated/boostport/privacy\xa2\x02\x03BPX\xaa\x02\x11Boostport.Privacy\xca\x02\x11Boostport\\Privacy\xe2\x02\x1dBoostport\\Privacy\\GPBMetadata\xea\x02\x12Boostport::Privacyb\beditionsp\xe8\a"
+	"\x15com.boostport.privacyB\fPrivacyProtoP\x01ZFgithub.com/Boostport/protoprivacy/internal/generated/boostport/privacy\xa2\x02\x03BPX\xaa\x02\x11Boostport.Privacy\xca\x02\x11Boostport\\Privacy\xe2\x02\x1dBoostport\\Privacy\\GPBMetadata\xea\x02\x12Boostport::Privacyb\beditionsp\xe9\a"
 
 var file_boostport_privacy_privacy_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
 var file_boostport_privacy_privacy_proto_goTypes = []any{

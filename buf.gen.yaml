@@ -7,6 +7,6 @@ managed:
 plugins:
   - remote: buf.build/protocolbuffers/go:v1.36.12
     out: internal/generated
-    opt: paths=source_relative,default_api_level=API_OPAQUE # remove API_OPAQUE when edition 2024 is released
+    opt: paths=source_relative
 inputs:
   - directory: proto
