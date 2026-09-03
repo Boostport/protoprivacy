@@ -1220,7 +1220,7 @@ const file_boostport_privacy_testing_test_proto_rawDesc = "" +
 	"\x06data13\x18\x0e \x01(\bB\a\x82}\x04\x12\x02h\x01R\x06data13\x12#\n" +
 	"\x06data14\x18\x0f \x01(\tB\v\x82}\b\x12\x06r\x04testR\x06data14\x12#\n" +
 	"\x06data15\x18\x10 \x01(\fB\v\x82}\b\x12\x06z\x04testR\x06data15B\x80\x02\n" +
-	"\x1dcom.boostport.privacy.testingB\tTestProtoP\x01ZNgithub.com/Boostport/protoprivacy/internal/generated/boostport/privacy/testing\xa2\x02\x03BPT\xaa\x02\x19Boostport.Privacy.Testing\xca\x02\x19Boostport\\Privacy\\Testing\xe2\x02%Boostport\\Privacy\\Testing\\GPBMetadata\xea\x02\x1bBoostport::Privacy::Testingb\beditionsp\xe8\a"
+	"\x1dcom.boostport.privacy.testingB\tTestProtoP\x01ZNgithub.com/Boostport/protoprivacy/internal/generated/boostport/privacy/testing\xa2\x02\x03BPT\xaa\x02\x19Boostport.Privacy.Testing\xca\x02\x19Boostport\\Privacy\\Testing\xe2\x02%Boostport\\Privacy\\Testing\\GPBMetadata\xea\x02\x1bBoostport::Privacy::Testingb\beditionsp\xe9\a"
 
 var file_boostport_privacy_testing_test_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
 var file_boostport_privacy_testing_test_proto_goTypes = []any{
