@@ -135,8 +135,8 @@ const file_boostport_privacy_testing_passthrough_proto_rawDesc = "" +
 	"+boostport/privacy/testing/passthrough.proto\x12\x19boostport.privacy.testing\"9\n" +
 	"\vPassthrough\x12\x12\n" +
 	"\x04data\x18\x01 \x01(\tR\x04data\x12\x16\n" +
-	"\x06number\x18\x02 \x01(\x05R\x06numberB\x87\x02\n" +
-	"\x1dcom.boostport.privacy.testingB\x10PassthroughProtoP\x01ZNgithub.com/Boostport/protoprivacy/internal/generated/boostport/privacy/testing\xa2\x02\x03BPT\xaa\x02\x19Boostport.Privacy.Testing\xca\x02\x19Boostport\\Privacy\\Testing\xe2\x02%Boostport\\Privacy\\Testing\\GPBMetadata\xea\x02\x1bBoostport::Privacy::Testingb\beditionsp\xe9\a"
+	"\x06number\x18\x02 \x01(\x05R\x06numberB\x85\x02\n" +
+	"\x1dcom.boostport.privacy.testingB\x10PassthroughProtoZNgithub.com/Boostport/protoprivacy/internal/generated/boostport/privacy/testing\xa2\x02\x03BPT\xaa\x02\x19Boostport.Privacy.Testing\xca\x02\x19Boostport\\Privacy\\Testing\xe2\x02%Boostport\\Privacy\\Testing\\GPBMetadata\xea\x02\x1bBoostport::Privacy::Testingb\beditionsp\xe9\a"
 
 var file_boostport_privacy_testing_passthrough_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_boostport_privacy_testing_passthrough_proto_goTypes = []any{
