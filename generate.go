@@ -1,2 +1,2 @@
-//go:generate go tool buf generate --clean
+//go:generate go tool buf generate
 package protoprivacy

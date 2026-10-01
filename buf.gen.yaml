@@ -1,4 +1,5 @@
 version: v2
+clean: true
 managed:
   enabled: true
   override:
@@ -8,5 +9,3 @@ plugins:
   - remote: buf.build/protocolbuffers/go:v1.36.12
     out: internal/generated
     opt: paths=source_relative
-inputs:
-  - directory: proto
